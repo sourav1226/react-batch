@@ -1,0 +1,77 @@
+.auth-body-bg {
+    background: linear-gradient(135deg, #030540 0%, #050978 50%, #070c5e 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.auth-card {
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 20px 60px rgba(3, 5, 64, 0.4);
+    width: 100%;
+    max-width: 440px;
+    overflow: hidden;
+}
+.auth-card .auth-header {
+    background: #050978;
+    padding: 2.5rem 2rem 1.5rem;
+    text-align: center;
+}
+.auth-card .auth-header .logo-img {
+    width: 100%;
+    height: auto;
+    max-height: 64px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    margin-bottom: .75rem;
+}
+.auth-card .auth-header h4 {
+    color: #fff;
+}
+.auth-card .auth-header p {
+    color: rgba(255,255,255,.65);
+}
+.auth-card .auth-body {
+    padding: 1.5rem 2rem 2rem;
+}
+.auth-card .form-control {
+    padding: 0.7rem 1rem;
+    border-radius: 0.5rem;
+}
+.auth-card .form-control:focus {
+    border-color: #050978;
+    box-shadow: 0 0 0 0.2rem rgba(5, 9, 120, 0.15);
+}
+.auth-card .input-group-text {
+    border-radius: 0.5rem 0 0 0.5rem;
+    background: #f8f9fc;
+}
+.auth-card .btn-auth {
+    padding: 0.7rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+}
+.auth-card .btn-primary-auth {
+    background: #050978;
+    border-color: #050978;
+    color: #fff;
+    transition: all 0.2s;
+}
+.auth-card .btn-primary-auth:hover {
+    background: #030540;
+    border-color: #030540;
+    color: #fff;
+}
+.auth-card .auth-footer {
+    text-align: center;
+    padding: 0 2rem 2rem;
+}
+.form-check-input:checked {
+    background-color: #050978;
+    border-color: #050978;
+}
+.auth-divider {
+    height: 4px;
+    background: linear-gradient(90deg, #030540, #050978, #030540);
+}
