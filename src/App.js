@@ -14,7 +14,7 @@ function App() {
       <Notifications/>
       <AdminStatus/>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
