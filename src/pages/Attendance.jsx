@@ -1,5 +1,6 @@
 import "../css/style.css";
 import { useState } from "react";
+import Sidebar from "../components/Sidebar";
 
 function Attendance() {
     const [students, setStudents] = useState([
@@ -82,59 +83,7 @@ status:""
     <div className="row">
       
       
-      <div className="col-md-2 col-lg-2 d-none d-md-block sidebar p-0">
-        <div className="brand">
-          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal" />
-        </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link" href="batches.html">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link active" href="attendance.html">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-        </nav>
-      </div>
-
-      
-      <div className="offcanvas offcanvas-start offcanvas-sidebar d-md-none" tabIndex="-1" id="sidebarOffcanvas">
-        <div className="brand">
-          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal" />
-          <button type="button" className="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link" href="batches.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link active" href="attendance.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-        </nav>
-      </div>
+      <Sidebar />
 
       <div className="col-md-10 col-lg-10 ms-auto px-0 main-content">
         
@@ -189,7 +138,7 @@ status:""
             <div className="col-6 col-md-3">
               <div className="card p-2 text-center border-0 shadow-sm" style={{ borderLeft: "4px solid #050978" }}>
                 <div className="text-muted small fw-bold">TOTAL STUDENTS</div>
-                <div className="fs-4 fw-bold text-dark">5</div>
+                <div className="fs-4 fw-bold text-dark">{students.length}</div>
               </div>
             </div>
             <div className="col-6 col-md-3">
@@ -312,7 +261,7 @@ L
         </div>
 
         <footer className="text-center mt-auto border-top py-3 text-muted" style={{ background: "#fff" }}>
-          &copy; 2026 Pedestal class Room. All rights reserved.
+          &copy; 2026 Pedestal Classroom. All rights reserved.
         </footer>
       </div>
 

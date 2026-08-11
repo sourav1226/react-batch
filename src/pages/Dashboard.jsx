@@ -1,4 +1,6 @@
 import "./Dashboard.css";
+import { Link } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
 
 function Dashboard()
 {
@@ -11,68 +13,14 @@ function Dashboard()
   };
     return (
         <div>
-            <h1>Dashboard</h1>
-            {/* <p>Welcome to the Dashboard!</p> */}
+
 
         
 
             <div className="container-fluid">
             <div className="row">
       
-                {/* <!-- 1. Left Sidebar Navigation (Desktop) --> */}
-                <div className="col-md-2 col-lg-2 d-none d-md-block sidebar p-0">
-                    <div className="brand">
-                    <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal" />
-                    </div>
-                    <nav className="nav flex-column">
-                    <div className="sidebar-heading">Main</div>
-                    <a className="nav-link active" href="dashboard.html">
-                        <i className="bi bi-speedometer2"></i> Dashboard
-                    </a>
-                    <a className="nav-link" href="migration-hub.html">
-                        <i className="bi bi-git"></i> Migration Hub
-                    </a>
-
-                    <div className="sidebar-heading">Academic</div>
-                    <a className="nav-link" href="batches.html">
-                        <i className="bi bi-collection"></i> Batches
-                    </a>
-                    <a className="nav-link" href="attendance.html">
-                        <i className="bi bi-clipboard-check"></i> Attendance
-                    </a>
-                    <a className="nav-link" href="schedules.html">
-                        <i className="bi bi-calendar-event"></i> Schedules
-                    </a>
-                    </nav>
-                </div>
-
-                {/* <!-- 2. Mobile Sidebar Offcanvas Drawer --> */}
-                <div className="offcanvas offcanvas-start offcanvas-sidebar d-md-none" tabIndex= {-1} id="sidebarOffcanvas">
-                    <div className="brand">
-                    <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal" />
-                    <button type="button" className="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas"></button>
-                    </div>
-                    <nav className="nav flex-column">
-                    <div className="sidebar-heading">Main</div>
-                    <a className="nav-link active" href="dashboard.html" data-bs-dismiss="offcanvas">
-                        <i className="bi bi-speedometer2"></i> Dashboard
-                    </a>
-                    <a className="nav-link" href="migration-hub.html" data-bs-dismiss="offcanvas">
-                        <i className="bi bi-git"></i> Migration Hub
-                    </a>
-
-                    <div className="sidebar-heading">Academic</div>
-                    <a className="nav-link" href="batches.html" data-bs-dismiss="offcanvas">
-                        <i className="bi bi-collection"></i> Batches
-                    </a>
-                    <a className="nav-link" href="attendance.html" data-bs-dismiss="offcanvas">
-                        <i className="bi bi-clipboard-check"></i> Attendance
-                    </a>
-                    <a className="nav-link" href="schedules.html" data-bs-dismiss="offcanvas">
-                        <i className="bi bi-calendar-event"></i> Schedules
-                    </a>
-                    </nav>
-                </div>
+                <Sidebar />
 
                 {/* <!-- 3. Right Main Content Area --> */}
                 <div className="col-md-10 col-lg-10 ms-auto px-0 main-content">
@@ -92,37 +40,33 @@ function Dashboard()
                         <ul className="navbar-nav ms-auto align-items-center gap-2">
                         {/* Bell Notification Dropdown */}
                         <li className="nav-item dropdown">
-                            <a className="nav-link position-relative p-1" href="#" 
-                            onClick={(e) => {
-                                e.preventDefault();
+                            <button type="button" className="nav-link position-relative p-1 btn border-0 bg-transparent" 
+                            onClick={() => {
                                 // showToastNotification("Notifications dropdown opened");
                             }}
-                            id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+                            id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false" >
 
                             <i className="bi bi-bell fs-5 text-secondary"></i>
                             <span id="header-notif-count" className="badge rounded-pill bg-danger d-none" style={{ position: 'absolute', top: '-2px', right: '-4px', fontSize: '0.55rem', minWidth: '15px' }} >
                                 0 
                                 </span>
-                            </a>
-                            <ul className="dropdown-menu dropdown-menu-end notif-dropdown-mobile p-0 shadow-lg border-0" aria-labelledby="notifDropdown">
+                            </button>
+                            <div className="dropdown-menu dropdown-menu-end notif-dropdown-mobile p-0 shadow-lg border-0" aria-labelledby="notifDropdown">
                                 <div className="p-3 border-bottom d-flex justify-content-between align-items-center">
                                     <span className="fw-bold fs-6">Recent Alerts</span>
-                                <a
-                                    href="#"
-                                    className="text-decoration-none small text-primary"
-                                    onClick={(e) => {
-                                        e.preventDefault();
+                                <button
+                                    type="button"
+                                    className="text-decoration-none small text-primary btn btn-link p-0 border-0"
+                                    onClick={() => {
                                         clearAllNotifications();
                                     }}
                                     >
                                     Mark all read
-                                    </a>
-                                /</div>    
+                                    </button>
+                                </div>    
                                     <div id="notif-dropdown-list" style={{ maxHeight: '320px', overflowY: 'auto' }}>
-                                    <li>
-                                    <a className="dropdown-item py-2" href="#" 
-                                    onClick={(e) => {
-                                                        e.preventDefault();
+                                    <button type="button" className="dropdown-item py-2 text-start"
+                                    onClick={() => {
                                                         showToastNotification("Notice details opened");
                                                         }}>
                                         <div className="d-flex align-items-start gap-2">
@@ -132,25 +76,23 @@ function Dashboard()
                                             <small className="text-muted" style={{ fontSize: '0.7rem' }}>1 hour ago</small>
                                         </div>
                                         </div>
-                                    </a>
-                                    </li>
+                                    </button>
                                 </div>
-                            </ul>
+                            </div>
                         </li>
 
                         {/* User Info Dropdown */}
                         <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle text-dark fw-semibold" href="#"
-                             onClick={(e) => {
-                                e.preventDefault();
+                            <button type="button" className="nav-link dropdown-toggle text-dark fw-semibold btn border-0 bg-transparent"
+                             onClick={() => {
                                 // showToastNotification("Notifications dropdown opened");
-                            }} id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            }} id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i className="bi bi-person-circle fs-5 me-1 text-secondary"></i>
                             <span id="user-display-name">Username</span>
                             <span id="user-display-badge" className="badge bg-primary ms-1">Student</span>
-                            </a>
+                            </button>
                             <ul className="dropdown-menu dropdown-menu-end border shadow-sm">
-                            <li><a className="dropdown-item" href="index.html"><i className="bi bi-box-arrow-right"></i> Logout</a></li>
+                            <li><Link className="dropdown-item" to="/"><i className="bi bi-box-arrow-right"></i> Logout</Link></li>
                             </ul>
                         </li>
                         </ul>
@@ -168,11 +110,11 @@ function Dashboard()
                             <div className="d-flex align-items-center flex-wrap gap-2">
                                 <span className="live-pulse"><span className="dot"></span> Live</span>
                                 <strong className="text-white">Classes Happening Now:</strong>
-                                <a href="batch-show.html" className="live-link d-inline-flex align-items-center gap-1">
+                                <Link to="/batches/1" className="live-link d-inline-flex align-items-center gap-1">
                                 <i className="bi bi-camera-video-fill"></i>
                                 Batch React Native
                                 <small>(Trainer Sourav)</small>
-                                </a>
+                                </Link>
                             </div>
                             </div>
                         </div>
@@ -183,30 +125,30 @@ function Dashboard()
                     <div className="row mb-3">
                         <div className="col-12">
                         <div className="quick-actions-wrap">
-                            <a href="batches.html" className="action-tile">
+                            <Link to="/batches" className="action-tile">
                             <div className="action-icon" style={{ backgroundColor: '#050978' }}><i className="bi bi-collection"></i></div>
                             <div className="action-text">
                                 <span className="title">My Batches</span>
                                 <span className="count">Manage Batches</span>
                             </div>
                             <i className="bi bi-chevron-right action-arrow"></i>
-                            </a>
-                            <a href="attendance.html" className="action-tile">
+                            </Link>
+                            <Link to="/attendance" className="action-tile">
                             <div className="action-icon" style={{ backgroundColor: '#198754' }}><i className="bi bi-clipboard-check"></i></div>
                             <div className="action-text">
                                 <span className="title">Roster Marking</span>
                                 <span className="count">Attendance List</span>
                             </div>
                             <i className="bi bi-chevron-right action-arrow"></i>
-                            </a>
-                            <a href="schedules.html" className="action-tile">
+                            </Link>
+                            <Link to="/schedules" className="action-tile">
                             <div className="action-icon" style={{ backgroundColor: '#7c3aed' }}><i className="bi bi-calendar-event"></i></div>
                             <div className="action-text">
                                 <span className="title">Academic Schedules</span>
                                 <span className="count">Class Calendar</span>
                             </div>
                             <i className="bi bi-chevron-right action-arrow"></i>
-                            </a>
+                            </Link>
                         </div>
                         </div>
                     </div>
@@ -291,9 +233,9 @@ function Dashboard()
                             
                             <div className="mb-2">
                                 <div className="px-1 pb-1 text-uppercase text-muted fw-bold" style={{ fontSize: '0.75rem' }}>
-                                <a href="batch-show.html" className="text-decoration-none text-muted"><i className="bi bi-collection me-1"></i> Batch React Native</a>
+                                <Link to="/batches/1" className="text-decoration-none text-muted"><i className="bi bi-collection me-1"></i> Batch React Native</Link>
                                 </div>
-                                <a href="schedules.html" className="upcoming-item">
+                                <Link to="/schedules" className="upcoming-item">
                                 <div className="date-box">
                                     <div className="day-name">Wed</div>
                                     <div className="day-num">01</div>
@@ -306,11 +248,11 @@ function Dashboard()
                                 <span className="time-badge">
                                     <i className="bi bi-clock me-1"></i> 10:00 AM - 12:00 PM
                                 </span>
-                                </a>
+                                </Link>
                                 
                                 <hr className="my-2" style={{ opacity: 0.1 }} />
 
-                                <a href="schedules.html" className="upcoming-item">
+                                <Link to="/schedules" className="upcoming-item">
                                 <div className="date-box">
                                     <div className="day-name">Thu</div>
                                     <div className="day-num">02</div>
@@ -323,7 +265,7 @@ function Dashboard()
                                 <span className="time-badge">
                                     <i className="bi bi-clock me-1"></i> 10:00 AM - 12:00 PM
                                 </span>
-                                </a>
+                                </Link>
                             </div>
 
                             </div>

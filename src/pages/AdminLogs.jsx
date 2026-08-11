@@ -1,4 +1,5 @@
 import "./AdminLogs.css";
+import Sidebar from "../components/Sidebar";
 
 function AdminLogs() {
   return (
@@ -8,94 +9,7 @@ function AdminLogs() {
   <div className="container-fluid">
     <div className="row">
       
-      {/* <!-- Left Sidebar Navigation --> */}
-      <div className="col-md-2 col-lg-2 d-none d-md-block sidebar p-0">
-        <div className="brand">
-          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal" />
-        </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link" href="batches.html">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-
-          <div className="sidebar-heading">Administration</div>
-          <a className="nav-link text-white-50" href="admin-trainers.html">
-            <i className="bi bi-person-badge"></i> Trainers Directory
-          </a>
-          <a className="nav-link text-white-50" href="admin-students.html">
-            <i className="bi bi-people"></i> Students Directory
-          </a>
-          <a className="nav-link text-white-50" href="admin-roles.html">
-            <i className="bi bi-shield-check"></i> Roles & Permissions
-          </a>
-          <a className="nav-link active" href="admin-logs.html">
-            <i className="bi bi-journal-text"></i> Audit Logs
-          </a>
-          <a className="nav-link text-white-50" href="admin-status.html">
-            <i className="bi bi-hdd-network"></i> System Status
-          </a>
-        </nav>
-      </div>
-
-      {/* <!-- Mobile Sidebar Offcanvas --> */}
-      <div className="offcanvas offcanvas-start offcanvas-sidebar d-md-none" tabindex="-1" id="sidebarOffcanvas">
-        <div className="brand">
-          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal" />
-          <button type="button" className="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link" href="batches.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-
-          <div className="sidebar-heading">Administration</div>
-          <a className="nav-link" href="admin-trainers.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-person-badge"></i> Trainers Directory
-          </a>
-          <a className="nav-link" href="admin-students.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-people"></i> Students Directory
-          </a>
-          <a className="nav-link" href="admin-roles.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-shield-check"></i> Roles & Permissions
-          </a>
-          <a className="nav-link active" href="admin-logs.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-journal-text"></i> Audit Logs
-          </a>
-          <a className="nav-link" href="admin-status.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-hdd-network"></i> System Status
-          </a>
-        </nav>
-      </div>
+      <Sidebar />
 
       {/* <!-- Right Main Content Area --> */}
       <div className="col-md-10 col-lg-10 ms-auto px-0 main-content">
@@ -118,12 +32,12 @@ function AdminLogs() {
           
           <ul className="nav nav-tabs mb-3 px-0 border-bottom">
             <li className="nav-item">
-              <a className="nav-link active" href="admin-logs.html">
+              <span className="nav-link active">
                 <i className="bi bi-journal-text me-1"></i>Activity Logs
-              </a>
+              </span>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#" onclick="alert('Viewing raw laravel.log stream...'); return false;">
+              <a className="nav-link" href="#/" onClick={(e) => { e.preventDefault(); alert('Viewing raw laravel.log stream...'); }}>
                 <i className="bi bi-terminal me-1"></i>System Exception Logs
               </a>
             </li>
@@ -160,7 +74,7 @@ function AdminLogs() {
                   </select>
                 </div>
                 <div className="col-md-1">
-                  <button className="btn btn-sm w-100" style={{background:'#4f46e5',color:'#fff',borderRadius:'8px',fontWeight:'600'}} onclick="showToastNotification('Log filter applied.')">
+                  <button className="btn btn-sm w-100" style={{background:'#4f46e5',color:'#fff',borderRadius:'8px',fontWeight:'600'}} onClick={() => alert('Log filter applied.')}>
                     <i className="bi bi-search"></i>
                   </button>
                 </div>
@@ -192,7 +106,7 @@ function AdminLogs() {
                           <div className="user-initial" style={{background:"#4f46e5"}}>S</div>
                           <div>
                             <div style={{fontWeight:"600",color:'#1e293b'}}>Sourav Sharma</div>
-                            <div className="text-muted" style={{fontSize:".75rem;"}}>Admin</div>
+                            <div className="text-muted" style={{fontSize:".75rem"}}>Admin</div>
                           </div>
                         </div>
                       </td>
@@ -214,7 +128,7 @@ function AdminLogs() {
                           <div className="user-initial" style={{background:"#4f46e5"}}>S</div>
                           <div>
                             <div style={{fontWeight:"600",color:'#1e293b'}}>Sourav Sharma</div>
-                            <div className="text-muted" style={{fontSize:".75rem;"}}>Admin</div>
+                            <div className="text-muted" style={{fontSize:".75rem"}}>Admin</div>
                           </div>
                         </div>
                       </td>
@@ -236,7 +150,7 @@ function AdminLogs() {
                           <div className="user-initial" style={{background:"#4f46e5"}}>S</div>
                           <div>
                             <div style={{fontWeight:"600",color:'#1e293b'}}>Sourav Sharma</div>
-                            <div className="text-muted" style={{fontSize:".75rem;"}}>Admin</div>
+                            <div className="text-muted" style={{fontSize:".75rem"}}>Admin</div>
                           </div>
                         </div>
                       </td>

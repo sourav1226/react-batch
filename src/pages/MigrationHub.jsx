@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import "./MigrationHub.css";
 
 function MigrationHub() {
@@ -21,24 +22,24 @@ function MigrationHub() {
         </div>
         <nav className="nav flex-column">
           <div className="sidebar-heading" style={{color:"var(--text-muted)"}}>Main</div>
-          <a className="nav-link text-white-50" href="dashboard.html">
+          <NavLink className="nav-link text-white-50" to="/dashboard">
             <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link active" href="migration-hub.html" style={{background:"linear-gradient(90deg, rgba(0, 130, 243, 0.12), transparent)", borderLeft:"3px solid var(--color-blue)", color:"var(--color-blue) !important"}}>
+          </NavLink>
+          <NavLink className={({ isActive }) => `nav-link${isActive ? " active text-white" : " text-white-50"}`} to="/migration-hub" end style={({ isActive }) => (isActive ? {background:"linear-gradient(90deg, rgba(0, 130, 243, 0.12), transparent)", borderLeft:"3px solid var(--color-blue)", color:"var(--color-blue)"} : undefined)}>
             <i className="bi bi-git"></i> Migration Hub
-          </a>
+          </NavLink>
 
           <div className="sidebar-heading" style={{color:"var(--text-muted)"}}>Academic</div>
-          <a className="nav-link text-white-50" href="batches.html">
+          <NavLink className="nav-link text-white-50" to="/batches">
             <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link text-white-50" href="attendance.html">
+          </NavLink>
+          <NavLink className="nav-link text-white-50" to="/attendance">
             <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link text-white-50" href="schedules.html">
+          </NavLink>
+          <NavLink className="nav-link text-white-50" to="/schedules">
             <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-          <a className="nav-link text-white-50" href="tasks.md" target="_blank">
+          </NavLink>
+          <a className="nav-link text-white-50" href="tasks.md" target="_blank" rel="noopener noreferrer">
             <i className="bi bi-journal-check"></i> Frontend Tracker
           </a>
         </nav>
@@ -52,24 +53,24 @@ function MigrationHub() {
         </div>
         <nav className="nav flex-column">
           <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html" data-bs-dismiss="offcanvas">
+          <NavLink className="nav-link" to="/dashboard" data-bs-dismiss="offcanvas">
             <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link active" href="migration-hub.html" data-bs-dismiss="offcanvas">
+          </NavLink>
+          <NavLink className={({ isActive }) => `nav-link${isActive ? " active" : ""}`} to="/migration-hub" end data-bs-dismiss="offcanvas">
             <i className="bi bi-git"></i> Migration Hub
-          </a>
+          </NavLink>
 
           <div className="sidebar-heading">Academic</div>
-          <a className="nav-link" href="batches.html" data-bs-dismiss="offcanvas">
+          <NavLink className="nav-link" to="/batches" data-bs-dismiss="offcanvas">
             <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html" data-bs-dismiss="offcanvas">
+          </NavLink>
+          <NavLink className="nav-link" to="/attendance" data-bs-dismiss="offcanvas">
             <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html" data-bs-dismiss="offcanvas">
+          </NavLink>
+          <NavLink className="nav-link" to="/schedules" data-bs-dismiss="offcanvas">
             <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-          <a className="nav-link" href="tasks.md" target="_blank" data-bs-dismiss="offcanvas">
+          </NavLink>
+          <a className="nav-link" href="tasks.md" target="_blank" rel="noopener noreferrer" data-bs-dismiss="offcanvas">
             <i className="bi bi-journal-check"></i> Frontend Tracker
           </a>
         </nav>

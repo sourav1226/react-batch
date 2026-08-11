@@ -1,8 +1,11 @@
 import "../css/style.css";
 import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
 
 function BatchShow() {
 
+    const { id } = useParams();
     const [status, setStatus] = useState("Active");
 
     const markCompletedSuccess = () => {
@@ -14,68 +17,7 @@ function BatchShow() {
             <div className="container-fluid">
     <div className="row">
       
-      <div className="col-md-2 col-lg-2 d-none d-md-block sidebar p-0">
-              <div className="brand">
-                <img
-                  src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png"
-                  alt="Pedestal"
-                />
-              </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link active" href="batches.html">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-        </nav>
-      </div>
-
-      <div className="offcanvas offcanvas-start offcanvas-sidebar d-md-none" tabIndex="-1" id="sidebarOffcanvas">
-        <div className="brand">
-                <img
-                  src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png"
-                  alt="Pedestal"
-                />
-                <button
-                  type="button"
-                  className="btn-close btn-close-white ms-auto"
-                  data-bs-dismiss="offcanvas"
-                ></button>
-              </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link active" href="batches.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-        </nav>
-      </div>
+      <Sidebar />
 
       <div className="col-md-10 col-lg-10 ms-auto px-0 main-content">
         
@@ -86,7 +28,7 @@ function BatchShow() {
             </button>
             
             <span className="navbar-text ms-0 fw-semibold fs-5 text-dark">
-              Batch Details: Batch React Native
+              Batch Details: Batch React Native {id ? `(#${id})` : ""}
             </span>
             
                   <div className="ms-auto">
@@ -106,25 +48,24 @@ function BatchShow() {
           <div className="row mb-3">
             <div className="col-12">
               <div className="quick-actions-wrap">
-                <a href="attendance.html" className="action-tile">
+                <Link to="/attendance" className="action-tile">
                   <div className="action-icon" style={{ backgroundColor: "#198754" }}><i className="bi bi-clipboard-check"></i></div>
                   <div className="action-text">
                     <span className="title">Mark Attendance</span>
                     <span className="count">Commit roster</span>
                   </div>
-                </a>
-                <a href="schedules.html" className="action-tile">
+                </Link>
+                <Link to="/schedules" className="action-tile">
                   <div className="action-icon" style={{ backgroundColor: "#7c3aed" }}><i className="bi bi-calendar-plus"></i></div>
                   <div className="action-text">
                     <span className="title">Add Schedule</span>
                     <span className="count">New calendar class</span>
                   </div>
-                </a>
-                <a
-                    href="#"
-                    className="action-tile"
-                    onClick={(e) => {
-                    e.preventDefault();
+                </Link>
+                <button
+                    type="button"
+                    className="action-tile btn border-0 text-start bg-transparent"
+                    onClick={() => {
                     alert("Teams recordings list is offline.");
                     }}
                 >
@@ -139,7 +80,7 @@ function BatchShow() {
                 <span className="title">Recordings</span>
                 <span className="count">3 Classes synchronized</span>
                 </div>
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -150,9 +91,9 @@ function BatchShow() {
               <div className="card shadow-sm border-0 mb-4">
                 <div className="card-header py-3 d-flex justify-content-between align-items-center bg-white border-bottom">
                   <h6 className="m-0 fw-bold text-dark fs-6">Batch Details</h6>
-                  <a href="batches.html" className="btn btn-light btn-sm border">
+                  <Link to="/batches" className="btn btn-light btn-sm border">
                     <i className="bi bi-arrow-left"></i> Back
-                  </a>
+                  </Link>
                 </div>
                 <div className="card-body">
                   <div className="row g-3">

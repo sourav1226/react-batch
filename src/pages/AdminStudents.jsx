@@ -1,5 +1,6 @@
 import "../css/style.css";
 import { useState } from "react";
+import Sidebar from "../components/Sidebar";
 
 function AdminStudents() {
     const [students, setStudents] = useState([
@@ -22,88 +23,27 @@ function AdminStudents() {
     avatar: "K",
   },
 ]);
-const toggleStudentBlock = (index) => {
-  const updatedStudents = [...students];
-
-  updatedStudents[index].status =
-    updatedStudents[index].status === "Active"
-      ? "Blocked"
-      : "Active";
-
-  setStudents(updatedStudents);
+const [search, setSearch] = useState("");
+const toggleStudentBlock = (name) => {
+  setStudents((prev) =>
+    prev.map((student) =>
+      student.name === name
+        ? { ...student, status: student.status === "Active" ? "Blocked" : "Active" }
+        : student
+    )
+  );
 };
+const filteredStudents = students.filter(
+  (student) =>
+    student.name.toLowerCase().includes(search.toLowerCase()) ||
+    student.email.toLowerCase().includes(search.toLowerCase())
+);
   return (
     <>
         <div className="container-fluid">
     <div className="row">
       
-      <div className="col-md-2 col-lg-2 d-none d-md-block sidebar p-0">
-        <div className="brand">
-          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal" />
-        </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link" href="batches.html">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-
-          <div className="sidebar-heading">Administration</div>
-          <a className="nav-link text-white-50" href="admin-trainers.html">
-            <i className="bi bi-person-badge"></i> Trainers Directory
-          </a>
-          <a className="nav-link active" href="admin-students.html">
-            <i className="bi bi-people"></i> Students Directory
-          </a>
-        </nav>
-      </div>
-      <div className="offcanvas offcanvas-start offcanvas-sidebar d-md-none" tabIndex="-1" id="sidebarOffcanvas">
-        <div className="brand">
-          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal" />
-          <button type="button" className="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link" href="batches.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-
-          <div className="sidebar-heading">Administration</div>
-          <a className="nav-link" href="admin-trainers.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-person-badge"></i> Trainers Directory
-          </a>
-          <a className="nav-link active" href="admin-students.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-people"></i> Students Directory
-          </a>
-        </nav>
-      </div>
+      <Sidebar />
 
       <div className="col-md-10 col-lg-10 ms-auto px-0 main-content">
         
@@ -130,7 +70,7 @@ const toggleStudentBlock = (index) => {
               
               <div className="row g-2 mb-3">
                 <div className="col-md-4">
-                  <input type="text" className="form-control form-control-sm" id="student-admin-search" placeholder="Search by name or email..." style={{ borderRadius: "8px"}} />
+                  <input type="text" className="form-control form-control-sm" id="student-admin-search" placeholder="Search by name or email..." style={{ borderRadius: "8px"}} value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
                 <div className="col-md-2">
                   <button className="btn btn-sm w-100" style={{ background: "#4f46e5" , color: "#fff" , borderRadius: "8px" , fontWeight: "600"}} onClick={() => {}}>
@@ -151,7 +91,7 @@ const toggleStudentBlock = (index) => {
                   </thead>
                   <tbody>
                     
-                    {students.map((student, index) => (
+                    {filteredStudents.map((student, index) => (
   <tr key={index}>
     <td>
       <div className="d-flex align-items-center gap-2">
@@ -216,7 +156,7 @@ const toggleStudentBlock = (index) => {
           borderRadius: "8px",
           fontWeight: "600",
         }}
-        onClick={() => toggleStudentBlock(index)}
+        onClick={() => toggleStudentBlock(student.name)}
       >
         <i
           className={

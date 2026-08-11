@@ -1,6 +1,7 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-function Header() {
+function Header({ title = "Dashboard" }) {
   return (
     <>
     <nav className="navbar navbar-expand navbar-light navbar-top px-4 py-2">
@@ -10,13 +11,13 @@ function Header() {
             </button>
             
             <span className="navbar-text ms-0 fw-semibold fs-5 text-dark">
-              Batches
+              {title}
             </span>
             
             <ul className="navbar-nav ms-auto align-items-center gap-2">
-              <button className="btn btn-primary btn-sm d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#create-batch-modal">
+              <Link className="btn btn-primary btn-sm d-flex align-items-center gap-1" to="/batches/new">
                 <i className="bi bi-plus-lg"></i> Create Batch
-              </button>
+              </Link>
             </ul>
           </div>
     </nav>

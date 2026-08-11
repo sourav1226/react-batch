@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import "./Login.css"
 function Login() {
+  const navigate = useNavigate();
   const[otp,setOtp]=useState(["","","","","",""])
   const [showOtpPanel,setshowOtpPanel]=useState(false);
   const [email,setEmail]=useState("")
@@ -48,7 +50,7 @@ function Login() {
     });
   }
   const handleOtpChange=(e,index)=>{
-    const value = e.target.value;
+    const value = e.target.value.replace(/\D/g, "");
     const newOtp=[...otp]
     newOtp[index]=value;
     setOtp(newOtp)
@@ -70,6 +72,7 @@ function Login() {
                 message: "OTP verified! Redirecting to dashboard...",
                 type: "success"
             });
+            navigate("/dashboard");
         } else {
             setAlert({
                 message: "Invalid token.",
@@ -150,6 +153,8 @@ function Login() {
         <div className="otp-box-container my-3">
           <input 
             type="text" 
+            inputMode="numeric" 
+            pattern="[0-9]*"
             className="otp-input-box" 
             maxLength="1"
             value={otp[0]}
@@ -159,6 +164,8 @@ function Login() {
           />
           <input 
             type="text" 
+            inputMode="numeric" 
+            pattern="[0-9]*"
             className="otp-input-box" 
             maxLength="1"
             value={otp[1]}
@@ -168,6 +175,8 @@ function Login() {
           />
           <input 
             type="text" 
+            inputMode="numeric" 
+            pattern="[0-9]*"
             className="otp-input-box" 
             maxLength="1"
             value={otp[2]}
@@ -177,6 +186,8 @@ function Login() {
           />
           <input 
             type="text" 
+            inputMode="numeric" 
+            pattern="[0-9]*"
             className="otp-input-box" 
             maxLength="1"
             value={otp[3]}
@@ -186,6 +197,8 @@ function Login() {
           />
           <input 
             type="text" 
+            inputMode="numeric" 
+            pattern="[0-9]*"
             className="otp-input-box" 
             maxLength="1"
             value={otp[4]}
@@ -195,6 +208,8 @@ function Login() {
           />
           <input 
             type="text" 
+            inputMode="numeric" 
+            pattern="[0-9]*"
             className="otp-input-box" 
             maxLength="1"
             value={otp[5]}
@@ -225,7 +240,7 @@ function Login() {
    
 
     <div className="auth-footer text-center">
-      <a href="index.html" className="text-decoration-none text-muted small"><i className="bi bi-arrow-left-circle"></i> Switch Workspace Portal</a>
+      <Link to="/" className="text-decoration-none text-muted small"><i className="bi bi-arrow-left-circle"></i> Switch Workspace Portal</Link>
     </div>
 
   </div>

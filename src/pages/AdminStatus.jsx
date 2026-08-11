@@ -1,4 +1,5 @@
 import React from 'react'
+import Sidebar from '../components/Sidebar'
 import "./AdminStatus.css"
 function AdminStatus() {
   return (
@@ -7,92 +8,7 @@ function AdminStatus() {
     <div className="container-fluid">
     <div className="row">
       
-      <div className="col-md-2 col-lg-2 d-none d-md-block sidebar p-0">
-        <div className="brand">
-          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal"/>
-        </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link" href="batches.html">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-
-          <div className="sidebar-heading">Administration</div>
-          <a className="nav-link text-white-50" href="admin-trainers.html">
-            <i className="bi bi-person-badge"></i> Trainers Directory
-          </a>
-          <a className="nav-link text-white-50" href="admin-students.html">
-            <i className="bi bi-people"></i> Students Directory
-          </a>
-          <a className="nav-link text-white-50" href="admin-roles.html">
-            <i className="bi bi-shield-check"></i> Roles & Permissions
-          </a>
-          <a className="nav-link text-white-50" href="admin-logs.html">
-            <i className="bi bi-journal-text"></i> Audit Logs
-          </a>
-          <a className="nav-link active" href="admin-status.html">
-            <i className="bi bi-hdd-network"></i> System Status
-          </a>
-        </nav>
-      </div>
-
-      <div className="offcanvas offcanvas-start offcanvas-sidebar d-md-none" tabIndex="-1" id="sidebarOffcanvas">
-        <div className="brand">
-          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal"/>
-          <button type="button" className="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link" href="batches.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-
-          <div className="sidebar-heading">Administration</div>
-          <a className="nav-link" href="admin-trainers.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-person-badge"></i> Trainers Directory
-          </a>
-          <a className="nav-link" href="admin-students.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-people"></i> Students Directory
-          </a>
-          <a className="nav-link" href="admin-roles.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-shield-check"></i> Roles & Permissions
-          </a>
-          <a className="nav-link" href="admin-logs.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-journal-text"></i> Audit Logs
-          </a>
-          <a className="nav-link active" href="admin-status.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-hdd-network"></i> System Status
-          </a>
-        </nav>
-      </div>
+      <Sidebar />
 
       <div className="col-md-10 col-lg-10 ms-auto px-0 main-content">
         

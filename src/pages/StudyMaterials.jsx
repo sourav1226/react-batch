@@ -1,5 +1,6 @@
 import React,{useState,useRef} from 'react'
 import Toast from '../components/Toast';
+import Sidebar from '../components/Sidebar';
 import * as bootstrap from "bootstrap";
 function StudyMaterials() {
   const [materials, setMaterials] = useState([
@@ -41,6 +42,7 @@ function deleteMaterial(id) {
   setToastMessage("File deleted.");
   setShowToast(true);
 }
+
 function downloadMaterial(title) {
   setToastMessage("Downloading document...");
   setShowToast(true);
@@ -53,7 +55,7 @@ function uploadMaterial() {
   }
 
   const newMaterial = {
-    id: materials.length + 1,
+    id: materials.reduce((maxId, m) => Math.max(maxId, m.id), 0) + 1,
     title: selectedFile.name,
     type: "Uploaded Document",
     icon: "bi-file-earmark-text",
@@ -85,70 +87,7 @@ function uploadMaterial() {
   <div className="container-fluid">
     <div className="row">
       
-      <div className="col-md-2 col-lg-2 d-none d-md-block sidebar p-0">
-        <div className="brand">
-          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal"/>
-        </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link" href="batches.html">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-          <a className="nav-link text-white-50" href="notices.html">
-            <i className="bi bi-megaphone"></i> Notice Board
-          </a>
-          <a className="nav-link active" href="study-materials.html">
-            <i className="bi bi-file-earmark-text"></i> Study Materials
-          </a>
-        </nav>
-      </div>
-
-      <div className="offcanvas offcanvas-start offcanvas-sidebar d-md-none" tabIndex="-1" id="sidebarOffcanvas">
-        <div className="brand">
-          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal"/>
-          <button type="button" className="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link" href="batches.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-          <a className="nav-link" href="notices.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-megaphone"></i> Notice Board
-          </a>
-          <a className="nav-link active" href="study-materials.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-file-earmark-text"></i> Study Materials
-          </a>
-        </nav>
-      </div>
+      <Sidebar />
 
       <div className="col-md-10 col-lg-10 ms-auto px-0 main-content">
         

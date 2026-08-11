@@ -1,64 +1,77 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
+
+const navSections = [
+  {
+    heading: "Main",
+    links: [
+      { to: "/dashboard", icon: "bi-speedometer2", label: "Dashboard", end: false },
+      { to: "/migration-hub", icon: "bi-git", label: "Migration Hub", end: false },
+    ],
+  },
+  {
+    heading: "Academic",
+    links: [
+      { to: "/batches", icon: "bi-collection", label: "Batches", end: true },
+      { to: "/attendance", icon: "bi-clipboard-check", label: "Attendance", end: false },
+      { to: "/schedules", icon: "bi-calendar-event", label: "Schedules", end: false },
+      { to: "/notices", icon: "bi-megaphone", label: "Notice Board", end: false },
+      { to: "/study-materials", icon: "bi-file-earmark-text", label: "Study Materials", end: false },
+      { to: "/notifications", icon: "bi-bell", label: "Notifications", end: false },
+    ],
+  },
+  {
+    heading: "Administration",
+    links: [
+      { to: "/admin/trainers", icon: "bi-person-badge", label: "Trainers Directory", end: false },
+      { to: "/admin/students", icon: "bi-people", label: "Students Directory", end: false },
+      { to: "/admin/logs", icon: "bi-journal-text", label: "Audit Logs", end: false },
+      { to: "/admin/status", icon: "bi-hdd-network", label: "System Status", end: false },
+    ],
+  },
+];
+
+function SidebarLinks({ mobile }) {
+  return (
+    <nav className="nav flex-column">
+      {navSections.map((section) => (
+        <React.Fragment key={section.heading}>
+          <div className="sidebar-heading">{section.heading}</div>
+          {section.links.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.end}
+              className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+              {...(mobile ? { "data-bs-dismiss": "offcanvas" } : {})}
+            >
+              <i className={`bi ${link.icon}`}></i> {link.label}
+            </NavLink>
+          ))}
+        </React.Fragment>
+      ))}
+    </nav>
+  );
+}
 
 function Sidebar() {
   return (
     <>
-    <div className="col-md-2 col-lg-2 d-none d-md-block sidebar p-0">
+      <div className="col-md-2 col-lg-2 d-none d-md-block sidebar p-0">
         <div className="brand">
-          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal"/>
+          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal" />
         </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link active" href="batches.html">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-        </nav>
+        <SidebarLinks />
       </div>
 
       <div className="offcanvas offcanvas-start offcanvas-sidebar d-md-none" tabIndex="-1" id="sidebarOffcanvas">
         <div className="brand">
-          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal"/>
+          <img src="https://pedestaltechnoworld.com/front-end/asset/images/header-logo.png" alt="Pedestal" />
           <button type="button" className="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas"></button>
         </div>
-        <nav className="nav flex-column">
-          <div className="sidebar-heading">Main</div>
-          <a className="nav-link" href="dashboard.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-speedometer2"></i> Dashboard
-          </a>
-          <a className="nav-link" href="migration-hub.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-git"></i> Migration Hub
-          </a>
-
-          <div className="sidebar-heading">Academic</div>
-          <a className="nav-link active" href="batches.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-collection"></i> Batches
-          </a>
-          <a className="nav-link" href="attendance.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-clipboard-check"></i> Attendance
-          </a>
-          <a className="nav-link" href="schedules.html" data-bs-dismiss="offcanvas">
-            <i className="bi bi-calendar-event"></i> Schedules
-          </a>
-        </nav>
+        <SidebarLinks mobile />
       </div>
-
-
     </>
-    
   )
 }
 

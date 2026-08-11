@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -9,7 +10,6 @@ function Batches() {
     const [courseProgram, setCourseProgram] = useState("");
     const [commencementDate, setCommencementDate] = useState("");
     const [graduationDate, setGraduationDate] = useState("");
-    const [status, setStatus] = useState("Active");
     const [statusFilter, setStatusFilter] = useState("");
     const [search, setSearch] = useState("");
     const [editingBatchId, setEditingBatchId] = useState(null);
@@ -42,6 +42,9 @@ function Batches() {
             status: "Completed",
         },
     ]);
+    const nextBatchId = () =>
+        batches.reduce((maxId, batch) => Math.max(maxId, batch.id), 0) + 1;
+
     const addBatch = () => {
         if (
             batchName.trim() === "" ||
@@ -53,17 +56,6 @@ function Batches() {
             return;
         }
 
-        const newBatch = {
-            id: batches.length + 1,
-            batchName,
-            courseProgram,
-            commencementDate,
-            graduationDate,
-            rosterCount: 0,
-            status: "Active",
-        };
-
-        
         if (editingBatchId !== null) {
             const updatedBatches = batches.map((batch) =>
                 batch.id === editingBatchId
@@ -81,7 +73,7 @@ function Batches() {
     setEditingBatchId(null);
   } else {
     const newBatch = {
-      id: batches.length + 1,
+      id: nextBatchId(),
       batchName,
       courseProgram,
       commencementDate,
@@ -132,7 +124,7 @@ function Batches() {
 
       <div className="col-md-10 col-lg-10 ms-auto px-0 main-content">
         
-        <Header/>
+        <Header title="Batches"/>
 
         <div className="content-wrapper">
           
@@ -188,12 +180,12 @@ function Batches() {
                     {filteredBatches.map((batch) => (
                         <tr key={batch.id}>
                             <td className="ps-4">
-                                <a
-                                    href="batch-show.html"
+                                <Link
+                                    to={`/batches/${batch.id}`}
                                     className="fw-bold text-decoration-none text-dark text-hover-primary"
                                 >
                                     {batch.batchName}
-                                </a>
+                                </Link>
                             </td>
 
                             <td>{batch.courseProgram}</td>
@@ -218,19 +210,19 @@ function Batches() {
 
                             <td className="pe-4 text-end">
                                 <div className="btn-group btn-group-actions">
-                                    <a
-                                        href="batch-show.html"
+                                    <Link
+                                        to={`/batches/${batch.id}`}
                                         className="btn btn-outline-secondary btn-sm"
                                     >
                                         <i className="bi bi-eye"></i>
-                                    </a>
+                                    </Link>
 
-                                    <a
-                                        href="attendance.html"
+                                    <Link
+                                        to="/attendance"
                                         className="btn btn-outline-secondary btn-sm"
                                     >
                                         <i className="bi bi-clipboard-check"></i>
-                                    </a>
+                                    </Link>
 
                                     <button
                                         className="btn btn-outline-secondary btn-sm"
