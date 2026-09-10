@@ -15,9 +15,7 @@ function Dashboard()
         <div>
             <div className="container-fluid">
             <div className="row">
-      
                 <Sidebar />
-
                 {/* <!-- 3. Right Main Content Area --> */}
                 <div className="col-md-10 col-lg-10 ms-auto px-0 main-content">
                     

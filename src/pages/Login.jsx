@@ -1,121 +1,113 @@
-import React, { useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import "./Login.css"
+import React, { useRef, useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendOtp, verifyOtp, resetOtpState, clearAuthStatus } from '../redux/slices/authSlice';
+import './Login.css';
+
 function Login() {
   const navigate = useNavigate();
-  const[otp,setOtp]=useState(["","","","","",""])
-  const [showOtpPanel,setshowOtpPanel]=useState(false);
-  const [email,setEmail]=useState("")
-  const [alert,setAlert]=useState({
-    message:"",
-    type:""
-  })
-  const inputRefs = useRef([]);
-  
-  const triggerSendOtp = () => {
+  const dispatch = useDispatch();
 
-    if (!email || !email.includes("@")) {
-      setAlert({
-        message: "Please input a valid email.",
-        type: "danger",
-      });
+  // 1. Redux State
+  const { loading, error, message, otpSent, isAuthenticated } = useSelector(
+    (state) => state.auth
+  );
+
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [email, setEmail] = useState("");
+  const [localAlert, setLocalAlert] = useState(null);
+  const inputRefs = useRef([]);
+
+  // 2. Redirect on successful authentication
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
+
+  // 3. Send OTP
+  const triggerSendOtp = () => {
+    setLocalAlert(null);
+    if (!email || !email.includes('@')) {
+      setLocalAlert({ type: 'danger', message: 'Please enter a valid email address.' });
       return;
     }
-
-    setAlert({
-      message: "Generating OTP token...",
-      type: "info",
-    });
-
-    setTimeout(() => {
-
-      setshowOtpPanel(true);
-
-      setAlert({
-        message: "OTP Dispatched! Hint: Type 123456 to login.",
-        type: "success",
-      });
-
-      if (inputRefs.current[0]) {
-        inputRefs.current[0].focus();
-      }
-
-    }, 1000);
+    dispatch(sendOtp(email));
   };
-  const backToEmailPanel=()=>{
-    setshowOtpPanel(false);
-    setAlert({
-      message: "",
-      type: "",
-    });
-  }
-  const handleOtpChange=(e,index)=>{
+
+  // 4. Verify OTP
+  const handleVerifyOtp = () => {
+    setLocalAlert(null);
+    const code = otp.join('');
+    if (code.length === 6) {
+      dispatch(verifyOtp({ email, otp: code }));
+    } else {
+      setLocalAlert({ type: 'danger', message: 'Please enter all 6 digits of the OTP.' });
+    }
+  };
+
+  // 5. Back to Email Step
+  const backToEmailPanel = () => {
+    dispatch(resetOtpState());
+    dispatch(clearAuthStatus());
+    setLocalAlert(null);
+    setOtp(["", "", "", "", "", ""]);
+  };
+
+  const handleOtpChange = (e, index) => {
     const value = e.target.value.replace(/\D/g, "");
-    const newOtp=[...otp]
-    newOtp[index]=value;
-    setOtp(newOtp)
-    if(value && index<5)
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+    if (value && index < 5 && inputRefs.current[index + 1]) {
       inputRefs.current[index + 1].focus();
-  }
-
-  const verifyOtp = () => {
-    const code = otp.join("");
-
-    setAlert({
-        message: "Verifying secure token...",
-        type: "info"
-    });
-
-    setTimeout(() => {
-        if (code.length === 6) {
-            setAlert({
-                message: "OTP verified! Redirecting to dashboard...",
-                type: "success"
-            });
-            navigate("/dashboard");
-        } else {
-            setAlert({
-                message: "Invalid token.",
-                type: "danger"
-            });
-        }
-    }, 800);
+    }
   };
+
   const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && otp[index] === "" && index > 0) {
+    if (e.key === "Backspace" && otp[index] === "" && index > 0 && inputRefs.current[index - 1]) {
       inputRefs.current[index - 1].focus();
     }
   };
-  return (
 
+  // Determine current active alert (Redux error/message or local validation)
+  const activeAlert = localAlert
+    ? localAlert
+    : error
+    ? { type: 'danger', message: error }
+    : message
+    ? { type: 'success', message }
+    : null;
+
+  return (
     <>
-    <div className="auth-body-bg">
+      <div className="auth-body-bg">
         <div className="auth-card">
-            <div className="auth-header text-center">
-                <div style={{display: "flex", justifyContent: "center", marginBottom: "0.75rem",}}>
-                <div style={{width: "48px", height: "48px", background:" #fff", color: "#050978", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "800", fontSize: "1.5rem"}}>P</div>
+          <div className="auth-header text-center">
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: "0.75rem" }}>
+              <div style={{ width: "48px", height: "48px", background: "#fff", color: "#050978", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "800", fontSize: "1.5rem" }}>
+                P
+              </div>
             </div>
             <h4 id="portal-title-text">Pedestal Class Room</h4>
             <p className="mb-0 text-white-50" id="portal-desc-text">Secure Access Portal</p>
-        </div>
+          </div>
 
-        <div className="auth-divider"></div>
+          <div className="auth-divider"></div>
 
-    
-        <div className="auth-body">
-      
-        <div id="otp-alert-container" className="mb-3">
-          {alert.message && (
-            <div
-              className={`alert alert-${alert.type} py-2 text-center`}
-              style={{ fontSize: "0.85rem" }}
-            >
-              {alert.message}
+          <div className="auth-body">
+            <div id="otp-alert-container" className="mb-3">
+              {activeAlert && (
+                <div
+                  className={`alert alert-${activeAlert.type} py-2 text-center`}
+                  style={{ fontSize: "0.85rem" }}
+                >
+                  {activeAlert.message}
+                </div>
+              )}
             </div>
-          )}
-        </div>
-        {
-          !showOtpPanel && (
+
+            {!otpSent && (
         
         <div id="panel-email" className="slide-panel">
         <form id="form-send-otp" 
@@ -138,13 +130,26 @@ function Login() {
                     />
                 </div>
             </div>
-            <button type="submit" className="btn btn-primary-auth w-100 py-2 fw-semibold">
-                Send Secure OTP <i className="bi bi-arrow-right-short"></i>
+            <button 
+              type="submit" 
+              className="btn btn-primary-auth w-100 py-2 fw-semibold"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Sending OTP...
+                </>
+              ) : (
+                <>
+                  Send Secure OTP <i className="bi bi-arrow-right-short"></i>
+                </>
+              )}
             </button>
         </form>
       </div>
 )}
-  {showOtpPanel &&(
+  {otpSent && (
       <div id="panel-otp" className="slide-panel ">
         <p className="text-muted text-center" style={{fontSize: "0.82rem", lineHeight: 1.4}}>
           We sent a 6-digit verification code. Please input it below to sign in.
@@ -221,12 +226,21 @@ function Login() {
 
         <button 
           type="button" 
-          onClick={verifyOtp}
+          onClick={handleVerifyOtp}
           id="otp-verify-btn" 
           className="btn btn-primary-auth w-100 py-2 fw-semibold" 
-          disabled={otp.some((digit) => digit === "")}
+          disabled={otp.some((digit) => digit === "") || loading}
         >
-          Verify Account & Login <i className="bi bi-shield-check"></i>
+          {loading ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Verifying...
+            </>
+          ) : (
+            <>
+              Verify Account & Login <i className="bi bi-shield-check"></i>
+            </>
+          )}
         </button>
 
         <div className="text-center mt-3">
