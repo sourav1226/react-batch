@@ -7,6 +7,7 @@ const navSections = [
     links: [
       { to: "/dashboard", icon: "bi-speedometer2", label: "Dashboard", end: false },
       { to: "/migration-hub", icon: "bi-git", label: "Migration Hub", end: false },
+      { to: "/all-links", icon: "bi-link-45deg", label: "All Links", end: false },
     ],
   },
   {

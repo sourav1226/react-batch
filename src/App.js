@@ -16,6 +16,7 @@ import AdminTrainers from './pages/AdminTrainers'
 import AdminStudents from './pages/AdminStudents'
 import AdminLogs from './pages/AdminLogs'
 import AdminStatus from './pages/AdminStatus'
+import AllLinks from './pages/AllLinks'
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/admin/students" element={<AdminStudents />} />
         <Route path="/admin/logs" element={<AdminLogs />} />
         <Route path="/admin/status" element={<AdminStatus />} />
+        <Route path="/all-links" element={<AllLinks />} />
         <Route path="*" element={<Index />} />
       </Routes>
     </BrowserRouter>
