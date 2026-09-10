@@ -1,28 +1,35 @@
 import "../css/style.css";
 import { useState } from "react";
+import StudentDetails from "./StudentDetails";
 import Sidebar from "../components/Sidebar";
 
 function AdminStudents() {
     const [students, setStudents] = useState([
   {
+    id: "STU001", 
     name: "Aman Sharma",
     email: "aman.s@pedestal.com",
     status: "Active",
     avatar: "A",
   },
   {
+    id: "STU002",
     name: "Divya Kapoor",
     email: "divya.k@pedestal.com",
     status: "Active",
     avatar: "D",
   },
   {
+    id: "STU003",
     name: "Karan Mehta",
     email: "karan.m@pedestal.com",
     status: "Blocked",
     avatar: "K",
   },
 ]);
+
+const [selectedStudent, setSelectedStudent] = useState(null);
+
 const [search, setSearch] = useState("");
 const toggleStudentBlock = (name) => {
   setStudents((prev) =>
@@ -60,6 +67,15 @@ const filteredStudents = students.filter(
         </nav>
 
         <div className="content-wrapper">
+
+           {selectedStudent ? (
+    
+    <StudentDetails
+      student={selectedStudent}
+      onBack={() => setSelectedStudent(null)}
+    />
+
+  ) : (
           
           <div className="card shadow-sm border-0" style={{ borderRadius: "12px"}}>
             <div className="card-header bg-white px-4 py-3 d-flex justify-content-between align-items-center" style={{ borderBottom: "1px solid #f1f5f9" }}>
@@ -142,6 +158,18 @@ const filteredStudents = students.filter(
 
     <td className="text-end pe-3">
       <button
+        className="btn btn-sm me-2"
+        style={{
+          background: "#e0e7ff",
+          color: "#3730a3",
+          border: "none",
+          borderRadius: "8px",
+          fontWeight: "600",
+        }}
+onClick={() => setSelectedStudent(student)}      >
+        <i className="bi bi-eye"></i> View
+      </button>
+      <button
         className="btn btn-sm"
         style={{
           background:
@@ -177,9 +205,10 @@ const filteredStudents = students.filter(
               </div>
 
             </div>
-          </div>
+          </div> 
+        )}
 
-        </div>
+        </div>  
 
         <footer className="text-center mt-auto border-top py-3 text-muted" style={{background:"#fff"}}>
           &copy; 2026 Pedestal class Room. All rights reserved.
