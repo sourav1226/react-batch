@@ -56,11 +56,36 @@ function Login() {
 
   const handleOtpChange = (e, index) => {
     const value = e.target.value.replace(/\D/g, "");
+    if (!value) {
+      const newOtp = [...otp];
+      newOtp[index] = "";
+      setOtp(newOtp);
+      return;
+    }
     const newOtp = [...otp];
-    newOtp[index] = value;
+    newOtp[index] = value.slice(-1); // Take only the last entered digit
     setOtp(newOtp);
-    if (value && index < 5 && inputRefs.current[index + 1]) {
+    if (index < 5 && inputRefs.current[index + 1]) {
       inputRefs.current[index + 1].focus();
+    }
+  };
+
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    if (!pastedData) return;
+
+    const newOtp = [...otp];
+    pastedData.split("").forEach((char, idx) => {
+      newOtp[idx] = char;
+    });
+    setOtp(newOtp);
+
+    // Focus on the next empty box or the last box
+    const nextEmptyIndex = newOtp.findIndex((digit) => digit === "");
+    const focusIndex = nextEmptyIndex !== -1 ? nextEmptyIndex : 5;
+    if (inputRefs.current[focusIndex]) {
+      inputRefs.current[focusIndex].focus();
     }
   };
 
@@ -108,147 +133,103 @@ function Login() {
             </div>
 
             {!otpSent && (
-        
-        <div id="panel-email" className="slide-panel">
-        <form id="form-send-otp" 
-          onSubmit={(e)=>{
-            e.preventDefault();
-            triggerSendOtp();
-          }}>
-            <div className="mb-3">
-                <label className="form-label fw-semibold text-muted" style={{fontSize:" 0.85rem"}}  htmlFor="email-input">Work Email Address</label>
-                <div className="input-group">
-                    <span className="input-group-text"><i className="bi bi-envelope"></i></span>
-                    <input 
-                      type="email" 
-                      id="email-input" 
-                      className="form-control" 
-                      placeholder="name@pedestaltechnoworld.com" 
-                      value={email}
-                      onChange={(e) =>setEmail(e.target.value)}
-                      required
+              <div id="panel-email" className="slide-panel">
+                <form
+                  id="form-send-otp"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    triggerSendOtp();
+                  }}
+                >
+                  <div className="mb-3">
+                    <label className="form-label fw-semibold text-muted" style={{ fontSize: "0.85rem" }} htmlFor="email-input">
+                      Work Email Address
+                    </label>
+                    <div className="input-group">
+                      <span className="input-group-text"><i className="bi bi-envelope"></i></span>
+                      <input
+                        type="email"
+                        id="email-input"
+                        className="form-control"
+                        placeholder="name@pedestaltechnoworld.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="btn btn-primary-auth w-100 py-2 fw-semibold"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Sending OTP...
+                      </>
+                    ) : (
+                      <>
+                        Send Secure OTP <i className="bi bi-arrow-right-short"></i>
+                      </>
+                    )}
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {otpSent && (
+              <div id="panel-otp" className="slide-panel">
+                <p className="text-muted text-center mb-1" style={{ fontSize: "0.85rem", lineHeight: 1.4 }}>
+                  Enter the 6-digit verification code sent to
+                </p>
+                <p className="text-center fw-bold text-dark mb-3" style={{ fontSize: "0.9rem" }}>
+                  {email}
+                </p>
+
+                <div className="otp-box-container my-3" onPaste={handlePaste}>
+                  {otp.map((digit, idx) => (
+                    <input
+                      key={idx}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      className="otp-input-box"
+                      maxLength="1"
+                      value={digit}
+                      ref={(el) => (inputRefs.current[idx] = el)}
+                      onChange={(e) => handleOtpChange(e, idx)}
+                      onKeyDown={(e) => handleKeyDown(e, idx)}
                     />
+                  ))}
                 </div>
-            </div>
-            <button 
-              type="submit" 
-              className="btn btn-primary-auth w-100 py-2 fw-semibold"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  Sending OTP...
-                </>
-              ) : (
-                <>
-                  Send Secure OTP <i className="bi bi-arrow-right-short"></i>
-                </>
-              )}
-            </button>
-        </form>
-      </div>
-)}
-  {otpSent && (
-      <div id="panel-otp" className="slide-panel ">
-        <p className="text-muted text-center" style={{fontSize: "0.82rem", lineHeight: 1.4}}>
-          We sent a 6-digit verification code. Please input it below to sign in.
-        </p>
-        
-        <div className="otp-box-container my-3">
-          <input 
-            type="text" 
-            inputMode="numeric" 
-            pattern="[0-9]*"
-            className="otp-input-box" 
-            maxLength="1"
-            value={otp[0]}
-            ref={(el) => (inputRefs.current[0] = el)}
-            onChange={(e)=>handleOtpChange(e,0)}
-            onKeyDown={(e) => handleKeyDown(e, 0)}
-          />
-          <input 
-            type="text" 
-            inputMode="numeric" 
-            pattern="[0-9]*"
-            className="otp-input-box" 
-            maxLength="1"
-            value={otp[1]}
-            ref={(el) => (inputRefs.current[1] = el)}
-            onChange={(e)=>handleOtpChange(e,1)}
-            onKeyDown={(e) => handleKeyDown(e, 1)}
-          />
-          <input 
-            type="text" 
-            inputMode="numeric" 
-            pattern="[0-9]*"
-            className="otp-input-box" 
-            maxLength="1"
-            value={otp[2]}
-            ref={(el) => (inputRefs.current[2] = el)}
-            onChange={(e)=>handleOtpChange(e,2)}
-            onKeyDown={(e) => handleKeyDown(e, 2)}
-          />
-          <input 
-            type="text" 
-            inputMode="numeric" 
-            pattern="[0-9]*"
-            className="otp-input-box" 
-            maxLength="1"
-            value={otp[3]}
-            ref={(el) => (inputRefs.current[3] = el)}
-            onChange={(e)=>handleOtpChange(e,3)}
-            onKeyDown={(e) => handleKeyDown(e, 3)}
-          />
-          <input 
-            type="text" 
-            inputMode="numeric" 
-            pattern="[0-9]*"
-            className="otp-input-box" 
-            maxLength="1"
-            value={otp[4]}
-            ref={(el) => (inputRefs.current[4] = el)}
-            onChange={(e)=>handleOtpChange(e,4)}
-            onKeyDown={(e) => handleKeyDown(e, 4)}
-          />
-          <input 
-            type="text" 
-            inputMode="numeric" 
-            pattern="[0-9]*"
-            className="otp-input-box" 
-            maxLength="1"
-            value={otp[5]}
-            ref={(el) => (inputRefs.current[5] = el)}
-            onChange={(e)=>handleOtpChange(e,5)}
-            onKeyDown={(e) => handleKeyDown(e, 5)}
-          />
-        </div>
 
-        <button 
-          type="button" 
-          onClick={handleVerifyOtp}
-          id="otp-verify-btn" 
-          className="btn btn-primary-auth w-100 py-2 fw-semibold" 
-          disabled={otp.some((digit) => digit === "") || loading}
-        >
-          {loading ? (
-            <>
-              <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-              Verifying...
-            </>
-          ) : (
-            <>
-              Verify Account & Login <i className="bi bi-shield-check"></i>
-            </>
-          )}
-        </button>
+                <button
+                  type="button"
+                  onClick={handleVerifyOtp}
+                  id="otp-verify-btn"
+                  className="btn btn-primary-auth w-100 py-2 fw-semibold"
+                  disabled={otp.some((digit) => digit === "") || loading}
+                >
+                  {loading ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                      Verifying...
+                    </>
+                  ) : (
+                    <>
+                      Verify Account & Login <i className="bi bi-shield-check"></i>
+                    </>
+                  )}
+                </button>
 
-        <div className="text-center mt-3">
-          <button type="button" className="btn btn-light btn-sm text-muted" onClick={backToEmailPanel}>
-            <i className="bi bi-arrow-left"></i> Change Email
-          </button>
-        </div>
-      </div>)}
+                <div className="text-center mt-3">
+                  <button type="button" className="btn btn-light btn-sm text-muted" onClick={backToEmailPanel}>
+                    <i className="bi bi-arrow-left"></i> Change Email
+                  </button>
+                </div>
+              </div>
+            )}
 
     </div>
    
