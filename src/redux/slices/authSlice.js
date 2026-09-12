@@ -21,7 +21,7 @@ export const verifyOtp = createAsyncThunk(
   'auth/verifyOtp',
   async ({ email, otp }, { rejectWithValue }) => {
     try {
-      const response = await api.post('/auth/verify-otp', { email, otp });
+      const response = await api.post('/login/otp/verify', { email, otp });
       // Example expected backend response: { token: "jwt-token-xyz", user: { name: "...", role: "..." } }
       return response.data;
     } catch (error) {

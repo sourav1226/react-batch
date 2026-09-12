@@ -75,3 +75,53 @@
     height: 4px;
     background: linear-gradient(90deg, #030540, #050978, #030540);
 }
+
+/* --- OTP Input Box Modern Design --- */
+.otp-box-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 1.5rem 0;
+}
+
+.otp-input-box {
+    width: 46px;
+    height: 52px;
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #050978;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.otp-input-box:hover {
+    border-color: #cbd5e1;
+    background: #ffffff;
+}
+
+.otp-input-box:focus {
+    border-color: #050978;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(5, 9, 120, 0.15);
+    transform: translateY(-2px);
+}
+
+.otp-input-box::selection {
+    background: transparent;
+}
+
+@media (max-width: 400px) {
+    .otp-box-container {
+        gap: 6px;
+    }
+    .otp-input-box {
+        width: 40px;
+        height: 46px;
+        font-size: 1.15rem;
+    }
+}
