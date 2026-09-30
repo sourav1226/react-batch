@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080/api', // Replace with your actual backend port/URL
+  baseURL: 'https://sienna-mink-167883.hostingersite.com/api', // Replace with your actual backend port/URL
   headers: {
     'Content-Type': 'application/json',
   },

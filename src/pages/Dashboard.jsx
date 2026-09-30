@@ -1,9 +1,36 @@
 import "./Dashboard.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/slices/authSlice";
 import Sidebar from "../components/Sidebar";
 
 function Dashboard()
 {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { user } = useSelector((state) => state.auth);
+
+    const getRoleString = (role) => {
+        if (!role) return "student";
+        if (typeof role === "string") return role;
+        if (typeof role === "object") return role.name || role.title || role.role || "student";
+        return String(role);
+    };
+
+    const rawRole = sessionStorage.getItem("userRole") || user?.role || "student";
+    const currentRole = getRoleString(rawRole);
+    const roleBadgeText = currentRole ? (currentRole.charAt(0).toUpperCase() + currentRole.slice(1)) : "Student";
+    const roleLower = currentRole.toLowerCase();
+    const roleBadgeClass = roleLower === "admin" ? "bg-danger" : roleLower === "instructor" ? "bg-success" : "bg-primary";
+    const displayName = (typeof user?.name === 'string' && user.name) ||
+                        (typeof user?.email === 'string' && user.email) ||
+                        (roleLower === "admin" ? "Alex Admin" : roleLower === "instructor" ? "Trainer Sourav" : "Aman Student");
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate("/login");
+    };
+
     const clearAllNotifications = () => {
     console.log("clearAllNotifications");
   };
@@ -78,15 +105,17 @@ function Dashboard()
                         {/* User Info Dropdown */}
                         <li className="nav-item dropdown">
                             <button type="button" className="nav-link dropdown-toggle text-dark fw-semibold btn border-0 bg-transparent"
-                             onClick={() => {
-                                // showToastNotification("Notifications dropdown opened");
-                            }} id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                             id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i className="bi bi-person-circle fs-5 me-1 text-secondary"></i>
-                            <span id="user-display-name">Username</span>
-                            <span id="user-display-badge" className="badge bg-primary ms-1">Student</span>
+                            <span id="user-display-name">{displayName}</span>
+                            <span id="user-display-badge" className={`badge ms-1 ${roleBadgeClass}`}>{roleBadgeText}</span>
                             </button>
                             <ul className="dropdown-menu dropdown-menu-end border shadow-sm">
-                            <li><Link className="dropdown-item" to="/"><i className="bi bi-box-arrow-right"></i> Logout</Link></li>
+                            <li>
+                                <button type="button" className="dropdown-item text-danger d-flex align-items-center gap-2" onClick={handleLogout}>
+                                    <i className="bi bi-box-arrow-right"></i> Logout
+                                </button>
+                            </li>
                             </ul>
                         </li>
                         </ul>
