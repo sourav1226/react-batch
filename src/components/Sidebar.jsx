@@ -1,5 +1,7 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { logout } from '../redux/slices/authSlice'
 
 const navSections = [
   {
@@ -33,6 +35,14 @@ const navSections = [
 ];
 
 function SidebarLinks({ mobile }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
+  };
+
   return (
     <nav className="nav flex-column">
       {navSections.map((section) => (
@@ -51,6 +61,16 @@ function SidebarLinks({ mobile }) {
           ))}
         </React.Fragment>
       ))}
+      <div className="sidebar-heading">Account</div>
+      <button
+        type="button"
+        onClick={handleLogout}
+        className="nav-link text-start border-0 bg-transparent w-100"
+        style={{ cursor: "pointer", color: "rgba(255,255,255,0.7)" }}
+        {...(mobile ? { "data-bs-dismiss": "offcanvas" } : {})}
+      >
+        <i className="bi bi-box-arrow-right"></i> Logout
+      </button>
     </nav>
   );
 }
