@@ -1,51 +1,92 @@
 import "../css/style.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
+import {
+  getBatchNotices,
+  createNotice,
+  updateNotice,
+  deleteNotice as deleteNoticeApi,
+} from "../api/batchNoticesApi";
 
 function Notices() {
-    const [notices, setNotices] = useState([
-  {
-    batch: "Batch React Native",
-    title: "API Integration Lecture Rescheduled",
-    body: "Please note that today's REST API integration session has been moved to 2:00 PM due to system maintenance.",
-    time: "Today, 10:30 AM",
-    badge: "primary",
-  },
-  {
-    batch: "Batch Node.js Gateway",
-    title: "Project Submission Deadline",
-    body: "The final microservices architecture assignment repository links must be submitted by Friday end of day.",
-    time: "Yesterday, 4:15 PM",
-    badge: "info",
-  },
-]);
+const [notices, setNotices] = useState([]);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState("");
+const [batchName, setBatchName] = useState("");
 const [title, setTitle] = useState("");
-const [batch, setBatch] = useState("Batch React Native");
 const [body, setBody] = useState("");
+const [editingNotice, setEditingNotice] = useState(null);
 
-const deleteNotice = (index) => {
-  setNotices((prev) => prev.filter((_, i) => i !== index));
+const BATCH_ID = 15;
+
+useEffect(() => {
+  const fetchNotices = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await getBatchNotices(BATCH_ID);
+
+      setNotices(response.data.notices || []);
+      setBatchName(response.data.batch?.batch_name || "");
+    } catch (error) {
+      setError(
+        error.response?.data?.message || "Failed to load notices."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchNotices();
+}, []);
+
+const deleteNotice = async (noticeId) => {
+  try {
+    await deleteNoticeApi(BATCH_ID, noticeId);
+
+    setNotices((prev) =>
+      prev.filter((notice) => notice.id !== noticeId)
+    );
+  } catch (error) {
+    alert(
+      error.response?.data?.message || "Failed to delete notice."
+    );
+  }
 };
 
-const publishNotice = () => {
-
+const publishNotice = async () => {
   if (!title || !body) {
     alert("Please fill out notice title and body.");
     return;
   }
 
-  const newNotice = {
-    batch,
-    title,
-    body,
-    time: "Just now",
-    badge: "primary",
-  };
+  try {
+    if (editingNotice) {
+      await updateNotice(
+        BATCH_ID,
+        editingNotice.id,
+        title,
+        body
+      );
+    } else {
+      await createNotice(BATCH_ID, title, body);
+    }
 
-  setNotices((prev) => [newNotice, ...prev]);
+    const response = await getBatchNotices(BATCH_ID);
 
-  setTitle("");
-  setBody("");
+    setNotices(response.data.notices || []);
+    setBatchName(response.data.batch?.batch_name || "");
+
+    setTitle("");
+    setBody("");
+    setEditingNotice(null);
+  } catch (error) {
+    alert(
+      error.response?.data?.message ||
+        "Failed to save notice."
+    );
+  }
 };
 
     return (
@@ -78,20 +119,31 @@ const publishNotice = () => {
           </div>
         </nav>
 
-        <div className="content-wrapper">
+              <div className="content-wrapper">
+                {loading && (
+                  <div className="text-center py-4">
+                    Loading notices...
+                  </div>
+                )}
+
+                {error && (
+                  <div className="alert alert-danger">
+                    {error}
+                  </div>
+                )}
           
           <div className="row g-3" id="notices-cards-container">
             
-           {notices.map((notice, index) => (
-  <div className="col-md-6 col-lg-4" key={index}>
+          {!loading && !error && notices.map((notice) => (
+<div className="col-md-6 col-lg-4" key={notice.id}>
     <div className="card shadow-sm border-0 h-100">
       <div className="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
-        <span className={`badge bg-${notice.badge}`}>
-          {notice.batch}
+        <span className="badge bg-primary">
+            {batchName}
         </span>
 
         <small className="text-muted">
-          {notice.time}
+          {new Date(notice.created_at).toLocaleString()}        
         </small>
       </div>
 
@@ -101,17 +153,32 @@ const publishNotice = () => {
         </h6>
 
         <p className="text-muted small mb-0">
-          {notice.body}
+          {notice.content}
         </p>
       </div>
 
       <div className="card-footer bg-white border-top text-end py-2">
-        <button
-          className="btn btn-sm btn-outline-danger"
-          onClick={() => deleteNotice(index)}
-        >
-          <i className="bi bi-trash"></i> Delete
-        </button>
+        <div className="d-flex justify-content-end gap-2">
+  <button
+    className="btn btn-sm btn-outline-primary"
+    onClick={() => {
+      setEditingNotice(notice);
+      setTitle(notice.title);
+      setBody(notice.content);
+    }}
+    data-bs-toggle="modal"
+    data-bs-target="#createNoticeModal"
+  >
+    <i className="bi bi-pencil"></i> Edit
+  </button>
+
+  <button
+    className="btn btn-sm btn-outline-danger"
+    onClick={() => deleteNotice(notice.id)}
+  >
+    <i className="bi bi-trash"></i> Delete
+  </button>
+</div>
       </div>
     </div>
   </div>
@@ -133,7 +200,9 @@ const publishNotice = () => {
     <div className="modal-dialog modal-dialog-centered">
       <div className="modal-content">
         <div className="modal-header" style={{ backgroundColor: "#050978", color: "#fff" }}>
-          <h5 className="modal-title">Publish Announcement</h5>
+          <h5 className="modal-title">
+  {editingNotice ? "Edit Announcement" : "Publish Announcement"}
+</h5>
           <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div className="modal-body">
@@ -147,15 +216,12 @@ const publishNotice = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="notice_batch" className="form-label fw-semibold text-muted small">Target Batch</label>
-                                <select
-  className="form-select"
-  value={batch}
-  onChange={(e) => setBatch(e.target.value)}
->
-  <option>Batch React Native</option>
-  <option>Batch Node.js Gateway</option>
-  <option>Batch Full Stack Java</option>
-</select>
+  <input
+  type="text"
+  className="form-control"
+  value={batchName || "Loading..."}
+  readOnly
+/>
           </div>
           <div className="mb-3">
             <label htmlFor="notice_body" className="form-label fw-semibold text-muted small">Notice Body</label>
