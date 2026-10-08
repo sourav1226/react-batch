@@ -1,7 +1,34 @@
 import "../css/style.css";
-import Sidebar from "../components/Sidebar";
+import { useEffect } from "react";
 
+import Sidebar from "../components/Sidebar";
+import { getBatchSchedules, getBatchScheduleCalendar } from "../api/scheduleApi";
 function Schedules() {
+    
+    const params = new URLSearchParams(window.location.search);
+    const batchId = params.get("batch_id");
+    useEffect(() => {
+        if (!batchId) return;
+
+        getBatchSchedules(batchId)
+            .then((data) => {
+                console.log("Schedules API response:", data);
+            })
+            .catch((error) => {
+                console.error("Failed to fetch schedules:", error);
+            });
+    }, [batchId]);
+    useEffect(() => {
+    if (!batchId) return;
+
+    getBatchScheduleCalendar(batchId)
+        .then((data) => {
+            console.log("Schedule Calendar API response:", data);
+        })
+        .catch((error) => {
+            console.error("Failed to fetch schedule calendar:", error);
+        });
+}, [batchId]);
   return (
     <>
     <div>

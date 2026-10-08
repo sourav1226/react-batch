@@ -55,8 +55,7 @@ function BatchShow() {
                     <span className="count">Commit roster</span>
                   </div>
                 </Link>
-                <Link to="/schedules" className="action-tile">
-                  <div className="action-icon" style={{ backgroundColor: "#7c3aed" }}><i className="bi bi-calendar-plus"></i></div>
+                <Link to={`/schedules?batch_id=${id}`} className="action-tile">                   <div className="action-icon" style={{ backgroundColor: "#7c3aed" }}><i className="bi bi-calendar-plus"></i></div>
                   <div className="action-text">
                     <span className="title">Add Schedule</span>
                     <span className="count">New calendar class</span>
